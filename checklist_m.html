@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Checklist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Style the entire page background */
+        body {
+            background-color: #f2f2f2;
+            color: #0b0c0c;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Style the input field and buttons */
+        input[type="text"] {
+            width: 80%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 80%;
+            background-color: #4caf50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Style the list */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            font-size: 18px;
+            padding: 8px;
+            margin-bottom: 8px;
+            background-color: #fff;
+        }
+
+        li.checked {
+            background-color: #4caf50;
+            color: white;
+            text-decoration: line-through;
+        }
+
+        li.checked:hover {
+            background-color: #3e8e41;
+        }
+
+        li:hover {
+            background-color: #ddd;
+        }
+
+        /* Style the clear button */
+        .clear-button {
+            background-color: #f44336;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 80%;
+        }
+
+        .clear-button:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Style the save button */
+        .save-button {
+            background-color: #e53935;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 80%;
+        }
+
+        .save-button:hover {
+            background-color: #c62828;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center;">Checklist</h1>
+    <input type="text" id="new-item" placeholder="Add an item">
+    <ul id="list"></ul>
+    <button class="clear-button" onclick="clearList()">Clear List</button>
+    <button class="save-button" onclick="saveChecklist()">Save Checklist</button>
+
+    <script>
+        // Initialize the list of items
+        var items = [];
+
+        // Get references to the input field and list elements
+        var newItem = document.getElementById("new-item");
+        var list = document.getElementById("list");
+
+        // Add an item to the list
+        function addItem() {
+            var text = newItem.value.trim();
+
+            if (text !== "") {
+                items.push({
+                    text: text,
+                    checked: false
+                });
+
+                newItem.value = "";
+                renderList();
+            }
+        }
+
+        // Update an item in the list
+        function updateItem(index) {
+            items[index].checked = !items[index].checked;
+            renderList();
+        }
+
+        // Remove an item from the list
+        function removeItem(index) {
+            items.splice(index, 1);
+            renderList();
+        }
+
+        // Clear the list
+        function clearList() {
+            items = [];
+            renderList();
+        }
+
+        // Handle keypress event on input field
+        newItem.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                addItem();
+            }
+        });
+
+        // Refresh the list
+        function renderList() {
+            // Clear the existing items in the list
+            list.innerHTML = "";
+
+            // Loop through the items and add them to the list
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                var li = document.createElement("li");
+                li.textContent = item.text;
+
+                // Add a "checked" class to the item if it is checked
+                if (item.checked) {
+                    li.classList.add("checked");
+                }
+
+                // Add event listeners to the list item to handle checking and removing items
+                li.addEventListener("click", function (event) {
+                    var index = Array.from(list.children).indexOf(event.target);
+                    updateItem(index);
+                });
+                li.addEventListener("contextmenu", function (event) {
+                    event.preventDefault();
+                    var index = Array.from(list.children).indexOf(event.target);
+                    removeItem(index);
+                });
+
+                // Add the item to the list
+                list.appendChild(li);
+            }
+        }
+
+        // Save the checklist as an HTML file
+        function saveChecklist() {
+            // Prompt the user to enter the filename
+            var fileName = prompt("Enter the filename for the checklist", "checklist.html");
+            if (fileName === null) {
+                // User canceled the prompt, do nothing
+                return;
+            }
+
+            // Create a new Blob object with the HTML content
+            var htmlContent = "<!DOCTYPE html>\n<html>\n" + document.documentElement.innerHTML + "\n</html>";
+            var blob = new Blob([htmlContent], { type: "text/html" });
+
+            // Create a new URL object for the Blob
+            var url = URL.createObjectURL(blob);
+
+            // Create a new anchor element to download the file
+            var downloadLink = document.createElement("a");
+            downloadLink.href = url;
+            downloadLink.download = fileName;
+
+            // Append the anchor element to the document and click it to trigger the download
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+
+            // Clean up the URL object and anchor element
+            URL.revokeObjectURL(url);
+            document.body.removeChild(downloadLink);
+        }
+
+        // Initial rendering of the list
+        renderList();
+
+    </script>
+
+</body>
+
+</html>
