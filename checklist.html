@@ -4,6 +4,15 @@
 <head>
     <title>TODO</title>
     <style>
+        /* Style the entire page background */
+        body {
+            background-color: #303030; /* Darker shade for the background */
+            color: #0b0c0c; /* Text color to make it more readable on dark background */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
         /* Style the input field and button */
         input[type="text"] {
             width: 80%;
@@ -72,11 +81,27 @@
         .clear-button:hover {
             background-color: #d32f2f;
         }
+
+        /* Style the edit button */
+        .edit-button {
+            background-color: #1E88E5; /* Darker shade of blue */
+            color: white;
+            padding: 6px 10px;
+            margin: 4px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+
+        .edit-button:hover {
+            background-color: #0D47A1; /* Darker shade of hover blue */
+        }
     </style>
 </head>
 
 <body>
-    <h1>Checklist</h1>
+    <h1 style="color: #ccc;">Checklist</h1>
     <input type="text" id="new-item" placeholder="Add an item">
     <ul id="list"></ul>
     <button class="clear-button" onclick="clearList()">Clear List</button>
@@ -167,4 +192,65 @@
             renderList();
         }
 
+        function editItem(index) {
+            var newText = prompt("Edit the item:", items[index].text);
+
+            if (newText !== null) {
+                items[index].text = newText.trim();
+                renderList();
+            }
+        }
+
+        // Refresh the list
+        function renderList() {
+            // Clear the existing items in the list
+            list.innerHTML = "";
+
+            // Loop through the items and add them to the list
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                var li = document.createElement("li");
+                li.textContent = item.text;
+
+                // Add a "checked" class to the item if it is checked
+                if (item.checked) {
+                    li.classList.add("checked");
+                }
+
+                // Create an edit button for each list item
+                var editButton = document.createElement("button");
+                editButton.textContent = "Edit";
+                editButton.classList.add("edit-button");
+                editButton.addEventListener("click", (function (index) {
+                    return function () {
+                        editItem(index);
+                    };
+                })(i));
+
+                // Add the edit button to the list item
+                li.appendChild(editButton);
+                list.appendChild(li);
+
+                // Add event listener to handle checking items
+                li.addEventListener("click", function (event) {
+                    var index = Array.from(list.children).indexOf(event.target);
+                    updateItem(index);
+                });
+
+                // Add event listener to handle removing items
+                li.addEventListener("contextmenu", function (event) {
+                    event.preventDefault();
+                    var index = Array.from(list.children).indexOf(event.target);
+                    removeItem(index);
+                });
+
+                // Add the item to the list
+                list.appendChild(li);
+            }
+        }
+
     </script>
+
+</body>
+
+</html>
