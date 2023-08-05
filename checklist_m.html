@@ -83,6 +83,10 @@
             background-color: #d32f2f;
         }
 
+        .dragging {
+            opacity: 0.5;
+        }
+
         /* Style the save button */
         .save-button {
             background-color: #e53935;
@@ -220,6 +224,72 @@
 
         // Initial rendering of the list
         renderList();
+
+        function handleDragStart(event) {
+            event.target.classList.add("dragging");
+            event.dataTransfer.setData("text/plain", event.target.id);
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "move";
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            var itemId = event.dataTransfer.getData("text/plain");
+            var item = document.getElementById(itemId);
+            var newIndex = Array.from(list.children).indexOf(event.target);
+
+            // If the drop target is not a list item, use its parent as the drop target
+            if (event.target.tagName !== "LI") {
+                newIndex = Array.from(list.children).indexOf(event.target.parentElement);
+            }
+
+            var currentIndex = Array.from(list.children).indexOf(item);
+            if (newIndex > currentIndex) {
+                newIndex--;
+            }
+
+            list.removeChild(item);
+            list.insertBefore(item, list.children[newIndex]);
+            item.classList.remove("dragging");
+            updateItemsOrder();
+        }
+
+        function handleDragEnd(event) {
+            event.target.classList.remove("dragging");
+        }
+
+        // Function to update the items order in the array after drag and drop
+        function updateItemsOrder() {
+            var updatedItems = [];
+            var listItems = list.getElementsByTagName("li");
+
+            for (var i = 0; i < listItems.length; i++) {
+                var itemId = listItems[i].id;
+                var itemIndex = Number(itemId.substring(5)); // Extract the item index from the id
+                updatedItems.push(items[itemIndex]);
+            }
+
+            items = updatedItems;
+        }
+
+        // Attach drag and drop event listeners to list items
+        function attachDragAndDrop() {
+            var listItems = list.getElementsByTagName("li");
+            for (var i = 0; i < listItems.length; i++) {
+                listItems[i].setAttribute("draggable", "true");
+                listItems[i].addEventListener("dragstart", handleDragStart);
+                listItems[i].addEventListener("dragover", handleDragOver);
+                listItems[i].addEventListener("drop", handleDrop);
+                listItems[i].addEventListener("dragend", handleDragEnd);
+            }
+        }
+
+        // Initial rendering of the list and attach drag and drop listeners
+        renderList();
+        attachDragAndDrop();
 
     </script>
 
