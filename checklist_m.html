@@ -98,23 +98,6 @@
         .save-button:hover {
             background-color: #c62828;
         }
-
-        /* Style the edit button */
-        .edit-button {
-            background-color: #1E88E5; /* Darker shade of blue */
-            color: white;
-            padding: 6px 10px;
-            margin-left: 8px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            float: right;
-            font-size: 14px;
-        }
-
-        .edit-button:hover {
-            background-color: #0D47A1; /* Darker shade of hover blue */
-        }
     </style>
 </head>
 
@@ -160,16 +143,6 @@
             renderList();
         }
 
-        // Edit an item in the list
-        function editItem(index) {
-            var newText = prompt("Edit the item:", items[index].text);
-
-            if (newText !== null) {
-                items[index].text = newText.trim();
-                renderList();
-            }
-        }
-
         // Clear the list
         function clearList() {
             items = [];
@@ -198,19 +171,6 @@
                 if (item.checked) {
                     li.classList.add("checked");
                 }
-
-                // Create an edit button for each list item
-                var editButton = document.createElement("button");
-                editButton.textContent = "Edit";
-                editButton.classList.add("edit-button");
-                editButton.addEventListener("click", (function (index) {
-                    return function () {
-                        editItem(index);
-                    };
-                })(i));
-
-                // Add the edit button to the list item
-                li.appendChild(editButton);
 
                 // Add event listeners to the list item to handle checking and removing items
                 li.addEventListener("click", function (event) {
