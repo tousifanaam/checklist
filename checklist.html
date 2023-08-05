@@ -97,6 +97,7 @@
         .edit-button:hover {
             background-color: #0D47A1; /* Darker shade of hover blue */
         }
+        
     </style>
 </head>
 
@@ -105,7 +106,7 @@
     <input type="text" id="new-item" placeholder="Add an item">
     <ul id="list"></ul>
     <button class="clear-button" onclick="clearList()">Clear List</button>
-
+    <button class="save-button" onclick="saveChecklist()">Save Checklist</button>
     <script>
         // Initialize the list of items
         var items = [];
@@ -248,8 +249,37 @@
                 list.appendChild(li);
             }
         }
+        function saveChecklist() {
+            // Prompt the user to enter the filename
+            var fileName = prompt("Enter the filename for the checklist", "checklist.html");
+            if (fileName === null) {
+                // User canceled the prompt, do nothing
+                return;
+            }
+
+            // Create a new Blob object with the HTML content
+            var htmlContent = "<!DOCTYPE html>\n<html>\n" + document.documentElement.innerHTML + "\n</html>";
+            var blob = new Blob([htmlContent], { type: "text/html" });
+
+            // Create a new URL object for the Blob
+            var url = URL.createObjectURL(blob);
+
+            // Create a new anchor element to download the file
+            var downloadLink = document.createElement("a");
+            downloadLink.href = url;
+            downloadLink.download = fileName;
+
+            // Append the anchor element to the document and click it to trigger the download
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+
+            // Clean up the URL object and anchor element
+            URL.revokeObjectURL(url);
+            document.body.removeChild(downloadLink);
+        }
 
     </script>
+
 
 </body>
 
