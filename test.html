@@ -90,9 +90,9 @@
                 const verseData = await response.json();
     
                 // Display the random verse
-                document.getElementById('chapter').textContent = `Chapter ${verseData.chapter}`;
-                document.getElementById('verse').textContent = `Verse ${verseData.verse}`;
-                document.getElementById('translation').textContent = verseData.translation;
+                document.getElementById('chapter').textContent = `${verseData.chapter.transliteration}`;
+                document.getElementById('verse').textContent = `${randomVerseNumber}`;
+                document.getElementById('translation').textContent = verseData.translations.en;
     
             } catch (error) {
                 console.error('Error fetching random verse:', error);
@@ -102,8 +102,6 @@
         // Call the function on page load
         displayRandomVerse();
     </script>
-
-
 
 
 </body></html>
