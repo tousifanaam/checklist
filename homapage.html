@@ -61,14 +61,8 @@
 </head>
 <body>
     <header>
-        <h1>Random Quran Verse</h1>
+        <h1>لا إله إلا الله محمد رسول الله</h1>
     </header>
-
-    <div id="content">
-        <p>Chapter: <span id="chapter"></span></p>
-        <p>Verse: <span id="verse"></span></p>
-        <p>English Translation: <span id="translation"></span></p>
-    </div>
 
     <!-- Google Search Bar -->
     <div id="search-form">
@@ -76,6 +70,13 @@
             <input type="text" name="q" placeholder="Search on Google...">
             <button type="submit">Search</button>
         </form>
+    </div>
+
+    <div id="content">
+        <p>Chapter: <span id="chapter"></span></p>
+        <p>Verse: <span id="verse"></span></p>
+        <p>English Translation: <span id="translation"></span></p>
+        <p><span id="main"></span></p>
     </div>
 
 
@@ -94,6 +95,7 @@
                 document.getElementById('chapter').textContent = verseData.chapter.transliteration;
                 document.getElementById('verse').textContent = verseData.number;
                 document.getElementById('translation').textContent = verseData.translations.en;
+                document.getElementById('main').textContent = verseData.text;
     
             } catch (error) {
                 console.error('Error fetching random verse:', error);
