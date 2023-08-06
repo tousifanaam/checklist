@@ -92,7 +92,7 @@
     
                 // Display the random verse
                 document.getElementById('chapter').textContent = verseData.chapter.transliteration;
-                document.getElementById('verse').textContent = randomVerseNumber;
+                document.getElementById('verse').textContent = verseData.number;
                 document.getElementById('translation').textContent = verseData.translations.en;
     
             } catch (error) {
