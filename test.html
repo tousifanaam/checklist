@@ -1,0 +1,106 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quran Verse - Samsung Galaxy S21 5G</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        #content {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        #search-form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+        }
+
+        button {
+            padding: 8px 15px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: 1px solid #007bff;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Random Quran Verse</h1>
+    </header>
+
+    <div id="content">
+        <p>Chapter: <span id="chapter"></span></p>
+        <p>Verse: <span id="verse"></span></p>
+        <p>English Translation: <span id="translation"></span></p>
+    </div>
+
+    <!-- Google Search Bar -->
+    <div id="search-form">
+        <form action="https://www.google.com/search" method="GET" target="_blank">
+            <input type="text" name="q" placeholder="Search on Google...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <script>
+    // Array of sample Quran verses for demonstration purposes
+    const quranVerses = [
+        { chapter: 'Chapter 1', verse: 'Verse 1', translation: 'In the name of Allah, the Most Gracious, the Most Merciful.' },
+        { chapter: 'Chapter 2', verse: 'Verse 255', translation: 'Allah! There is no deity except Him, the Ever-Living, the Sustainer of existence.' },
+        { chapter: 'Chapter 3', verse: 'Verse 18', translation: 'Allah witnesses that there is no deity except Him, and [so do] the angels and those of knowledge - [that He is] maintaining [creation] in justice. There is no deity except Him, the Exalted in Might, the Wise.' }
+        // Add more verses as needed
+    ];
+
+    // Function to display a random verse
+    function displayRandomVerse() {
+        const randomIndex = Math.floor(Math.random() * quranVerses.length);
+        const randomVerse = quranVerses[randomIndex];
+
+        document.getElementById('chapter').textContent = randomVerse.chapter;
+        document.getElementById('verse').textContent = randomVerse.verse;
+        document.getElementById('translation').textContent = randomVerse.translation;
+    }
+
+    // Call the function on page load
+    displayRandomVerse();
+</script>
+
+
+
+</body></html>
